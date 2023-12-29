@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Wallet Connect Boilerplate</title>
+    <style>
+        /* Basic styling for the page */
+        body {
+            background-color: #1e1e1e;
+            color: #ffffff;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        /* Header styling */
+        #header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        /* Styling for the wallet address widget */
+        #walletAddress {
+            background-color: #004080; /* Darker blue color */
+            padding: 10px;
+            border-radius: 4px;
+            margin-right: 10px;
+            box-shadow: 0 0 10px rgba(0, 128, 255, 0.5); /* Blue glow */
+        }
+
+        /* Styling for the Connect Wallet button */
+        #connectButton {
+            padding: 10px;
+            background-color: #004080; /* Darker blue color */
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* Styling for the main container */
+        #container {
+            background-color: #282c35;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+
+        /* Styling for the instructions section */
+        #instructions {
+            text-align: left;
+        }
+
+        /* Styling for the wallet connect widget */
+        .wallet-widget {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Styling for the Connect Wallet button inside the widget */
+        .wallet-widget button {
+            background-color: #4a90e2; /* Dark blue color */
+            color: #ffffff; /* White text color */
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header section containing wallet address and connect button -->
+    <div id="header">
+        <div id="walletAddress">No wallet connected</div>
+        <div id="walletConnect" class="wallet-widget">
+            <button onclick="connectWallet()">Connect Wallet</button>
+        </div>
+    </div>
+
+    <!-- Main container for the content -->
+    <div id="container">
+        <h1>Simple wallet connect dapp</h1>
+
+        <!-- Instructions section -->
+        <div id="instructions">
+            <h2>Instructions for Use:</h2>
+            <ol>
+                <li>Copy the provided HTML code.</li>
+                <li>Paste it into your HTML file or editor.</li>
+                <li>Customize the page as needed.</li>
+                <li>Ensure you have the necessary MetaMask browser extension installed.</li>
+                <li>Open the HTML file in a web browser.</li>
+                <li>Click the "Connect Wallet" button to connect your wallet.</li>
+                <li>Once connected, your wallet address will be displayed in the widget.</li>
+                <li>Follow any additional instructions provided by your wallet provider.</li>
+                <li>Disconnect your wallet when finished using the DApp.</li>
+            </ol>
+        </div>
+
+        <!-- JavaScript section for wallet connection logic -->
+        <script>
+            // Variable to store the connected user's wallet address
+            let userWalletAddress = null;
+
+            // Function to connect the wallet
+            async function connectWallet() {
+                if (window.ethereum) {
+                    try {
+                        // Request account access
+                        const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+                        userWalletAddress = accounts[0];
+                        updateWalletWidget();
+                    } catch (error) {
+                        console.error(error);
+                        alert('Wallet connection failed. Please check your wallet and try again.');
+                    }
+                } else {
+                    alert('MetaMask is not installed. Please install it to connect your wallet.');
+                }
+            }
+
+            // Function to update the wallet widget with the connected wallet address
+            function updateWalletWidget() {
+                const walletAddressElement = document.getElementById('walletAddress');
+                walletAddressElement.textContent = userWalletAddress ? `Connected Wallet: ${userWalletAddress}` : 'No wallet connected';
+            }
+        </script>
+
+    </div>
+</body>
+
+</html>
